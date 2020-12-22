@@ -5,6 +5,8 @@
  */
 package com.example.documenting;
 
+import com.business.AccountBS;
+import com.document.dto.UserDTO;
 import static javax.swing.JOptionPane.showMessageDialog;
 
 /**
@@ -109,9 +111,14 @@ public class Login extends javax.swing.JFrame {
         if(jTextField1.getText().isEmpty() || jTextField2.getText().isEmpty()) {
             showMessageDialog(null, "Please enter the username or password");
         } else {
-            Index index = new Index();
-            index.setVisible(true);
-            this.setVisible(false);
+            UserDTO user = new AccountBS().getUser(jTextField1.getText(), jTextField2.getText());
+            if(user == null) {
+                showMessageDialog(null, "The username or password wrong");
+            } else {
+                Index index = new Index();
+                index.setVisible(true);
+                this.setVisible(false);
+            }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
