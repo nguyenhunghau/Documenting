@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.example.documenting;
 
 import com.business.AccountBS;
@@ -115,7 +110,7 @@ public class LoginPage extends javax.swing.JFrame {
             if(user == null) {
                 showMessageDialog(null, "The username or password wrong");
             } else {
-                AdminStaffPage index = new AdminStaffPage();
+                StaffPage index = new StaffPage(user.getIsAdmin());
                 index.setVisible(true);
                 this.setVisible(false);
             }

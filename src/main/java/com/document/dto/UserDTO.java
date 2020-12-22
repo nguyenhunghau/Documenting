@@ -40,7 +40,7 @@ public class UserDTO {
         this.password = password;
     }
 
-    public boolean isIsAdmin() {
+    public boolean getIsAdmin() {
         return isAdmin;
     }
 

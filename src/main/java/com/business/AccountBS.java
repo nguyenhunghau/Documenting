@@ -13,9 +13,6 @@ public class AccountBS {
     
     UserDAO userDAO = new UserDAO();
     
-    public static void main(String[] args) throws Exception {
-        System.out.print(new AccountBS().userDAO.getUser("minh", "minh123"));
-    }
     
     public UserDTO getUser(String username, String password) {
         try {
