@@ -104,6 +104,9 @@ public class StaffPage extends javax.swing.JFrame {
 
     private void btnStaffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStaffActionPerformed
         // TODO add your handling code here:
+        ManageStaffAccPage manageStaffAccPage = new ManageStaffAccPage();
+        manageStaffAccPage.setVisible(true);
+        this.setVisible(false);
     }//GEN-LAST:event_btnStaffActionPerformed
 
     /**
