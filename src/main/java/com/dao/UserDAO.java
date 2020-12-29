@@ -88,6 +88,14 @@ public class UserDAO {
         }
     }
     
+    public boolean delete(int id) throws Exception {
+        String sql = "delete from user where id=" + id;
+        try (Connection con = MyConnection.get();
+                PreparedStatement ps = con.prepareStatement(sql)) {
+            return ps.executeUpdate(sql) == 1;
+        }
+    }
+    
     public boolean update(UserDTO user) throws Exception {
         String sql = "update user set Username='"+ user.getUsername() + "'"
                 + ", Password='"+ user.getPassword()+ "', Name='"+ user.getName()+ "', Admin="+ user.getIsAdmin()

@@ -177,6 +177,9 @@ public class AddInfoStaff extends javax.swing.JFrame {
                 txtPassword.setText("");
                 txtName.setText("");
                 cboAdmin.setSelected(false);
+                this.setVisible(false);
+                ManageStaffAccPage staffPage = new ManageStaffAccPage();
+                staffPage.setVisible(true);
             } else {
                 showMessageDialog(null, "Add staff fail");
             }
@@ -184,6 +187,9 @@ public class AddInfoStaff extends javax.swing.JFrame {
             if(account.update(idStaff, txtUsername.getText(), txtPassword.getText(), 
                     txtName.getText(), cboAdmin.isSelected())) {
                 showMessageDialog(null, "Update staff success");
+                this.setVisible(false);
+                ManageStaffAccPage staffPage = new ManageStaffAccPage();
+                staffPage.setVisible(true);
             } else {
                 showMessageDialog(null, "Update staff fail");
             }

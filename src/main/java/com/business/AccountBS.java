@@ -2,6 +2,7 @@ package com.business;
 
 import com.dao.UserDAO;
 import com.document.dto.UserDTO;
+import com.table.UserTableModel;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -14,7 +15,8 @@ import java.util.logging.Logger;
  * @author Admin
  */
 public class AccountBS {
-    
+    public JTable jtblAccount;
+            
     UserDAO userDAO = new UserDAO();
     
     public UserDTO getUser(int id) {
@@ -66,8 +68,9 @@ public class AccountBS {
 
     public JScrollPane createJTable() throws Exception {
         List<UserDTO> userDTOList = userDAO.getUserList();
+        //UserTableModel model = new UserTableModel(userDTOList);
         DefaultTableModel model = new DefaultTableModel();
-        JTable jtbl = new JTable(model);
+        jtblAccount = new JTable(model);
         model.addColumn("Id");
         model.addColumn("Username");
         model.addColumn("Name");
@@ -75,7 +78,11 @@ public class AccountBS {
         for(UserDTO user: userDTOList) {
             model.addRow(new Object[]{user.getId(), user.getUsername(), user.getName(), user.getIsAdmin()? "Yes": "No"});
         }
-        return new JScrollPane(jtbl);
+        return new JScrollPane(jtblAccount);
         //https://stackoverflow.com/questions/27815400/retrieving-data-from-jdbc-database-into-jtable
+    }
+    
+    public boolean delete(int id) throws Exception {
+        return userDAO.delete(id);
     }
 }
