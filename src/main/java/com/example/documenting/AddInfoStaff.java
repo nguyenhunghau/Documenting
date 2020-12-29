@@ -22,9 +22,9 @@ public class AddInfoStaff extends javax.swing.JFrame {
      */
     public AddInfoStaff(Integer id) {
         initComponents();
+            idStaff = id;
         if(id !=  null) {
             btnAddStaff.setText("Update Staff");
-            idStaff = id;
             UserDTO newUSer = account.getUser(id);
             txtUsername.setText(newUSer.getUsername());
             txtPassword.setText(newUSer.getPassword());
