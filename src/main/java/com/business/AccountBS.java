@@ -2,6 +2,10 @@ package com.business;
 
 import com.dao.UserDAO;
 import com.document.dto.UserDTO;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -58,5 +62,20 @@ public class AccountBS {
             Logger.getLogger(AccountBS.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
+    }
+
+    public JScrollPane createJTable() throws Exception {
+        List<UserDTO> userDTOList = userDAO.getUserList();
+        DefaultTableModel model = new DefaultTableModel();
+        JTable jtbl = new JTable(model);
+        model.addColumn("Id");
+        model.addColumn("Username");
+        model.addColumn("Name");
+        model.addColumn("Admin");
+        for(UserDTO user: userDTOList) {
+            model.addRow(new Object[]{user.getId(), user.getUsername(), user.getName(), user.getIsAdmin()? "Yes": "No"});
+        }
+        return new JScrollPane(jtbl);
+        //https://stackoverflow.com/questions/27815400/retrieving-data-from-jdbc-database-into-jtable
     }
 }

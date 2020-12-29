@@ -5,6 +5,8 @@ import com.document.dto.UserDTO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -25,6 +27,7 @@ public class UserDAO {
                 user.setUsername(rs.getString("Username"));
                 user.setName(rs.getString("Name"));
                 user.setIsAdmin(rs.getBoolean("Admin"));
+                user.setPassword(rs.getString("Password"));
                 return user;
             }
             return null;
@@ -43,12 +46,31 @@ public class UserDAO {
                 user.setUsername(rs.getString("Username"));
                 user.setName(rs.getString("Name"));
                 user.setIsAdmin(rs.getBoolean("Admin"));
+                user.setPassword(rs.getString("Password"));
                 return user;
             }
             return null;
         }
-    } 
-    
+    }
+
+    public List<UserDTO> getUserList() throws Exception {
+        String sql = "select * from user";
+        List<UserDTO> list = new ArrayList<>();
+        try (Connection con = MyConnection.get();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+                UserDTO user = new UserDTO();
+                user.setId(rs.getInt("Id"));
+                user.setUsername(rs.getString("Username"));
+                user.setName(rs.getString("Name"));
+                user.setIsAdmin(rs.getBoolean("Admin"));
+                list.add(user);
+            }
+            return list;
+        }
+    }
+
     public boolean save(UserDTO user) throws Exception {
         String sql = "insert into `user` (`Username`, `Password`, `Name`, `Admin`) values ('"
                 + user.getUsername() + "','"
