@@ -27,6 +27,7 @@ public class StudentDAO {
                 + student.getNumber() + "','"
                 + student.getPhone() + "','"
                 + student.getDate() + "')";
+                int result = -1;
         try (Connection con = MyConnection.get();
                 PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             System.out.println(ps.toString());
@@ -34,10 +35,11 @@ public class StudentDAO {
             ps.executeUpdate();
             try (ResultSet rs = ps.getGeneratedKeys()) {
                 if (rs.next()) {
-                    return rs.getInt(1);
+                    result = rs.getInt(1);
                 }
                 rs.close();
-                return -1;
+                ps.close();
+                return result;
             }
         }
     }
