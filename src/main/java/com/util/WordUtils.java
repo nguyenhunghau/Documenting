@@ -1,9 +1,11 @@
 package com.util;
 import com.aspose.words.*;
+import com.dao.ConditionDAO;
+import com.dao.StudentDAO;
+import com.document.dto.ConditionDTO;
 import com.document.dto.StudentDTO;
-import com.sun.deploy.util.StringUtils;
-
 import java.util.ArrayList;
+import org.apache.commons.lang3.StringUtils;
 
 public class WordUtils {
 
@@ -16,9 +18,10 @@ public class WordUtils {
     private static final String ADDRESS = "Address:";
     private static final String DIAGNOSIS = "mental health condition:";
 
-    public static void main(String[] args) throws Exception {
-        Document doc = new Document("D:\\work\\demo.docx");
+    public StudentDTO readStudentDoc(String pathFile) throws Exception {
+        Document doc = new Document(pathFile);
         StudentDTO student = new StudentDTO();
+        ConditionDTO condition = new ConditionDTO();
         boolean nextIsDiagnosis = false, nextIsDesc = false, nextIsComment = false;
         java.util.List<String> description = new ArrayList<String>();
 
@@ -37,16 +40,16 @@ public class WordUtils {
                 student.setNumber(number.trim().replace("_", ""));
                 student.setPhone(telephone.trim().replace("_", ""));
                 System.out.println(student.getNumber() + " " + student.getPhone());
-            } else if (text.contains(DATE)) {
+            } else if (text.contains(DATE) && student.getDate() == null) {
                 String date = getString(text, DATE);
                 student.setDate(date.trim().replace("_", ""));
                 System.out.println(student.getDate());
             } else if (text.contains(PRACTITIONER)) {
-                student.setPractitioner(getString(text, PRACTITIONER).trim().replace("_", ""));
-                System.out.println(student.getPractitioner());
+                condition.setPractitioner(getString(text, PRACTITIONER).trim().replace("_", ""));
+                System.out.println(condition.getPractitioner());
             } else if (text.contains(ADDRESS)) {
-                student.setAddress(getString(text, ADDRESS).trim().replace("_", ""));
-                System.out.println(student.getAddress());
+                condition.setAddress(getString(text, ADDRESS).trim().replace("_", ""));
+                System.out.println(condition.getAddress());
             } else if (text.contains(DIAGNOSIS)) {
                 nextIsDiagnosis = true;
                 continue;
@@ -54,7 +57,7 @@ public class WordUtils {
                 nextIsDesc = true;
                 continue;
             } else if (text.contains("writing time for exams).")) {
-                student.setDescription(StringUtils.join(description, "\n"));
+                condition.setExtraInfo(StringUtils.join(description, "\n"));
                 System.out.println(student.getDescription());
                 description.clear();
                 nextIsDesc = false;
@@ -68,8 +71,8 @@ public class WordUtils {
             }
 
             if(nextIsDiagnosis && !text.trim().isEmpty()) {
-                student.setDiagnosis(text.trim().replace("_", ""));
-                System.out.println(student.getDiagnosis());
+                condition.setDiagnosis(text.trim().replace("_", ""));
+                System.out.println(condition.getDiagnosis());
                 nextIsDiagnosis = false;
                 continue;
             }
@@ -83,6 +86,10 @@ public class WordUtils {
                 description.add(text.trim().replace("_", ""));
             }
         }
+        int studentID = new StudentDAO().save(student);
+        condition.setStudentId(studentID);
+        new ConditionDAO().save(condition);
+        return student;
     }
 
     private static String getString(String text, String name) {
