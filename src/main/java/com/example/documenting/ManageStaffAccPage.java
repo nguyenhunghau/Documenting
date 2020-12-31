@@ -5,17 +5,41 @@
  */
 package com.example.documenting;
 
+import com.business.AccountBS;
+import java.awt.Container;
+import java.awt.FlowLayout;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import static javax.swing.JOptionPane.showMessageDialog;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author HUUMINH
  */
 public class ManageStaffAccPage extends javax.swing.JFrame {
 
+    AccountBS account = new AccountBS();
+    Container cnt;
+
     /**
      * Creates new form ManageStaffAccPage
      */
     public ManageStaffAccPage() {
         initComponents();
+        loadListData();
+    }
+
+    public void loadListData() {
+        try {
+            DefaultTableModel model = new DefaultTableModel();
+            cnt = this.getContentPane();
+            cnt.setLayout(new FlowLayout(FlowLayout.LEFT));
+            cnt.add(account.createJTable());
+            this.pack();
+        } catch (Exception ex) {
+            Logger.getLogger(ManageStaffAccPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -51,36 +75,37 @@ public class ManageStaffAccPage extends javax.swing.JFrame {
         });
 
         jButton4.setText("delete");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(60, 60, 60)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton4))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 99, Short.MAX_VALUE)
-                        .addComponent(jButton3)))
-                .addGap(49, 49, 49))
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(963, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(59, 59, 59)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 119, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
-                    .addComponent(jButton4))
-                .addGap(64, 64, 64))
+                .addGap(29, 29, 29)
+                .addComponent(jButton2)
+                .addGap(17, 17, 17)
+                .addComponent(jButton1)
+                .addGap(18, 18, 18)
+                .addComponent(jButton3)
+                .addGap(18, 18, 18)
+                .addComponent(jButton4)
+                .addContainerGap(244, Short.MAX_VALUE))
         );
 
         pack();
@@ -95,10 +120,35 @@ public class ManageStaffAccPage extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        AddInfoStaff updateStaff = new AddInfoStaff(1);
-        updateStaff.setVisible(true);
-        this.setVisible(false);
+        try {
+            int column = 0;
+            int row = account.jtblAccount.getSelectedRow();
+            String value = account.jtblAccount.getModel().getValueAt(row, column).toString();
+            AddInfoStaff updateStaff = new AddInfoStaff(Integer.valueOf(value));
+            updateStaff.setVisible(true);
+            this.setVisible(false);
+        } catch (Exception ex) {
+            showMessageDialog(null, "PLease select staff in table");
+        }
+
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        try {
+            int column = 0;
+            int row = account.jtblAccount.getSelectedRow();
+            String value = account.jtblAccount.getModel().getValueAt(row, column).toString();
+            account.delete(Integer.valueOf(value));
+            int[] rows = account.jtblAccount.getSelectedRows();
+            DefaultTableModel model = (DefaultTableModel) account.jtblAccount.getModel();
+            for (int i = 0; i < rows.length; i++) {
+                model.removeRow(rows[i] - i);
+            }
+        } catch (Exception ex) {
+            showMessageDialog(null, "PLease select staff in table");
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
