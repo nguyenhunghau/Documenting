@@ -4,8 +4,12 @@ import com.dao.ConditionDAO;
 import com.dao.StudentDAO;
 import com.document.dto.ConditionDTO;
 import com.document.dto.StudentDTO;
-import java.util.ArrayList;
-import org.apache.commons.lang3.StringUtils;
+import com.sun.deploy.util.StringUtils;
+
+import java.util.*;
+import java.util.List;
+
+//import org.apache.commons.lang3.StringUtils;
 
 public class WordUtils {
 
@@ -18,7 +22,7 @@ public class WordUtils {
     private static final String ADDRESS = "Address:";
     private static final String DIAGNOSIS = "mental health condition:";
 
-    public StudentDTO readStudentDoc(String pathFile) throws Exception {
+    public static StudentDTO readStudentDoc(String pathFile) throws Exception {
         Document doc = new Document(pathFile);
         StudentDTO student = new StudentDTO();
         ConditionDTO condition = new ConditionDTO();
@@ -88,11 +92,91 @@ public class WordUtils {
         }
         int studentID = new StudentDAO().save(student);
         condition.setStudentId(studentID);
+        readCheckbox(condition, doc);
         new ConditionDAO().save(condition);
         return student;
     }
 
     private static String getString(String text, String name) {
         return text.substring(text.indexOf(name) + name.length());
+    }
+
+    public static void readCheckbox(ConditionDTO condition, Document doc) throws Exception {
+        int dem = 0;
+        Map<String, Boolean> conditionMap = new LinkedHashMap<>(), durationMap = new LinkedHashMap<>(), impactMap = new LinkedHashMap<>();
+
+        for (Paragraph para : (Iterable<Paragraph>) doc.getChildNodes(NodeType.PARAGRAPH,true)) {
+            String text = para.toString(SaveFormat.TEXT).trim();
+            if(text.contains("Indicate condition:")) {
+                dem++;
+                continue;
+            }
+            if(dem ==1 || dem == 2) {
+                addIntoMap(conditionMap, text);
+                dem++;
+                continue;
+            } else if(dem == 5) {
+                addIntoMap(durationMap, text);
+                dem++;
+                continue;
+            } else if(dem == 8) {
+                addIntoMap(impactMap, text);
+                break;
+            }
+            if(dem > 0) {
+                dem++;
+            }
+        }
+
+        FormFieldCollection FFC = doc.getRange().getFormFields();
+        Iterator iterator = FFC.iterator();
+
+        int index = 0;
+        List<String> listKey1 = new ArrayList<>(conditionMap.keySet());
+        List<String> listKey2 = new ArrayList<>(durationMap.keySet());
+        List<String> listKey3 = new ArrayList<>(impactMap.keySet());
+        while (iterator.hasNext()) {
+            FormField chkBox = (FormField)iterator.next();
+            if(chkBox.getChecked()) {
+                if(index < conditionMap.size()) {
+                    conditionMap.put(listKey1.get(index), true);
+                } else if(index < conditionMap.size() + durationMap.size()){
+                    durationMap.put(listKey2.get(index - conditionMap.size()), true);
+                } else {
+                    impactMap.put(listKey3.get(index - conditionMap.size() - durationMap.size()), true);
+                }
+            }
+            index++;
+        }
+        condition.setCondition(mapToString(conditionMap));
+        condition.setDuration(mapToString(durationMap));
+        condition.setImpact(mapToString(impactMap));
+    }
+
+    private static void addIntoMap(Map<String, Boolean> map, String text) {
+        String[] arr = text.trim().split("\t");
+        for(String item: arr) {
+            if(!item.trim().isEmpty()) {
+                map.put(item.trim().replace("_", ""), false);
+            }
+        }
+    }
+
+    private static String mapToString(Map<String, Boolean> map) {
+        StringBuilder result = new StringBuilder();
+        map.forEach((key, value) -> {
+            if(value) {
+                result.append(key).append(", ");
+            }
+        });
+        return result.toString().trim();
+    }
+
+    public static void main(String[] main) {
+        try {
+            StudentDTO student = readStudentDoc("D:\\work\\demo.docx");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

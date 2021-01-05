@@ -1,6 +1,7 @@
 package com.document.dto;
 
 public class StudentDTO {
+    private int id;
     private String firstName;
     private String lastName;
     private String number;
@@ -8,6 +9,16 @@ public class StudentDTO {
     private String date;
     private String description;
     private String comment;
+
+    private ConditionDTO condition;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getFirstName() {
         return firstName;
@@ -62,5 +73,13 @@ public class StudentDTO {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public ConditionDTO getCondition() {
+        return condition;
+    }
+
+    public void setCondition(ConditionDTO condition) {
+        this.condition = condition;
     }
 }

@@ -6,12 +6,15 @@
 package com.dao;
 
 import com.connection.MyConnection;
+import com.document.dto.ConditionDTO;
 import com.document.dto.StudentDTO;
 import com.document.dto.UserDTO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -41,6 +44,26 @@ public class StudentDAO {
                 ps.close();
                 return result;
             }
+        }
+    }
+
+    public List<StudentDTO> getList() throws Exception {
+        String sql = "select * from student";
+        List<StudentDTO> list = new ArrayList<>();
+        try (Connection con = MyConnection.get();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+                StudentDTO student = new StudentDTO();
+                student.setFirstName(rs.getString("FirstName"));
+                student.setLastName(rs.getString("FamilyName"));
+                student.setDescription(rs.getString("Description"));
+                student.setDate(rs.getString("Created"));
+                student.setNumber(rs.getString("StudentId"));
+                student.setPhone(rs.getString("Phone"));
+                list.add(student);
+            }
+            return list;
         }
     }
 }
