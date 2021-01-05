@@ -6,6 +6,7 @@
 package com.example.documenting;
 
 import com.business.StudentBS;
+import com.util.Global;
 import com.util.WordUtils;
 import java.awt.Container;
 import java.awt.FlowLayout;
@@ -80,6 +81,11 @@ public class ManageStdAccPage extends javax.swing.JFrame {
         jButton3.setText("Search Data");
 
         jButton4.setText("Return");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jButton5.setText("Delete");
 
@@ -152,6 +158,13 @@ public class ManageStdAccPage extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_btnUploadActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        StaffPage staffPage = new StaffPage(Global.admin);
+        staffPage.setVisible(true);
+        this.setVisible(false);
+        dispose();
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments

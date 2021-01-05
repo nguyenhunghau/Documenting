@@ -5,6 +5,8 @@
  */
 package com.example.documenting;
 
+import com.util.Global;
+
 /**
  *
  * @author Admin
@@ -19,6 +21,7 @@ public class StaffPage extends javax.swing.JFrame {
         if(!isAdmin) {
             btnStaff.setVisible(false);
         }
+        Global.admin = isAdmin;
     }
 
     /**
@@ -61,6 +64,11 @@ public class StaffPage extends javax.swing.JFrame {
         });
 
         jButton4.setText("Logout");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -96,6 +104,10 @@ public class StaffPage extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
+        ManageStdAccPage student = new ManageStdAccPage();
+        student.setVisible(true);
+        setVisible(false);
+        dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -103,11 +115,19 @@ public class StaffPage extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void btnStaffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStaffActionPerformed
-        // TODO add your handling code here:
+        
         ManageStaffAccPage manageStaffAccPage = new ManageStaffAccPage();
         manageStaffAccPage.setVisible(true);
         this.setVisible(false);
+        dispose();
     }//GEN-LAST:event_btnStaffActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        LoginPage login = new LoginPage();
+        login.setVisible(true);
+        this.setVisible(false);
+        dispose();
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
