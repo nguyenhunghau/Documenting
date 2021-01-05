@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.dao;
 
 import com.connection.MyConnection;
@@ -55,9 +50,10 @@ public class StudentDAO {
             ResultSet rs = ps.executeQuery();
             while(rs.next()) {
                 StudentDTO student = new StudentDTO();
+                student.setId(rs.getInt("Id"));
                 student.setFirstName(rs.getString("FirstName"));
                 student.setLastName(rs.getString("FamilyName"));
-                student.setDescription(rs.getString("Description"));
+                //student.setDescription(rs.getString("Description"));
                 student.setDate(rs.getString("Created"));
                 student.setNumber(rs.getString("StudentId"));
                 student.setPhone(rs.getString("Phone"));

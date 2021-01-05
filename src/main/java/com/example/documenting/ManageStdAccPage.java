@@ -5,13 +5,19 @@
  */
 package com.example.documenting;
 
+import com.business.StudentBS;
 import com.util.WordUtils;
+import java.awt.Container;
+import java.awt.FlowLayout;
 import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import static javax.swing.JOptionPane.showMessageDialog;
+import javax.swing.JScrollPane;
 import javax.swing.filechooser.FileSystemView;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -19,11 +25,28 @@ import javax.swing.filechooser.FileSystemView;
  */
 public class ManageStdAccPage extends javax.swing.JFrame {
 
-    /**
-     * Creates new form ManageStdAccPage
-     */
+    Container cnt;
+    StudentBS student = new StudentBS();
+
     public ManageStdAccPage() {
         initComponents();
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+       // this.setUndecorated(true);
+        loadListData();
+    }
+
+    public void loadListData() {
+        try {
+            DefaultTableModel model = new DefaultTableModel();
+            cnt = this.getContentPane();
+            cnt.setLayout(new FlowLayout(FlowLayout.LEFT));
+            JScrollPane jscroll = student.createJTable();
+            jscroll.setSize(10000, 10000);
+            cnt.add(jscroll);
+            this.pack();
+        } catch (Exception ex) {
+            Logger.getLogger(ManageStaffAccPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -36,6 +59,7 @@ public class ManageStdAccPage extends javax.swing.JFrame {
     private void initComponents() {
 
         jFileChooser1 = new javax.swing.JFileChooser();
+        jPanel1 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         btnUpload = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
@@ -59,39 +83,51 @@ public class ManageStdAccPage extends javax.swing.JFrame {
 
         jButton5.setText("Delete");
 
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap(23, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton3)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnUpload, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnUpload)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton1)
+                .addGap(18, 18, 18)
+                .addComponent(jButton5)
+                .addGap(10, 10, 10)
+                .addComponent(jButton4)
+                .addGap(18, 18, 18)
+                .addComponent(jButton3)
+                .addContainerGap(41, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(131, 131, 131)
-                        .addComponent(jButton3))
-                    .addComponent(jButton4)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1)
-                        .addGap(188, 188, 188)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton5)
-                            .addComponent(btnUpload))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(1210, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(55, 55, 55)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(btnUpload))
-                .addGap(53, 53, 53)
-                .addComponent(jButton3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
-                .addComponent(jButton5)
-                .addGap(7, 7, 7)
-                .addComponent(jButton4)
-                .addGap(42, 42, 42))
+                .addGap(25, 25, 25)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(173, Short.MAX_VALUE))
         );
 
         pack();
@@ -106,6 +142,10 @@ public class ManageStdAccPage extends javax.swing.JFrame {
             try {
                 new WordUtils().readStudentDoc(selectedFile.getAbsolutePath());
                 showMessageDialog(null, "Upload file success");
+                ManageStdAccPage manage = new ManageStdAccPage();
+                setVisible(false);
+                dispose();
+                manage.setVisible(true);
             } catch (Exception ex) {
                 Logger.getLogger(ManageStdAccPage.class.getName()).log(Level.SEVERE, null, ex);
                 showMessageDialog(null, "Upload file fail");
@@ -155,5 +195,6 @@ public class ManageStdAccPage extends javax.swing.JFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JFileChooser jFileChooser1;
+    private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }

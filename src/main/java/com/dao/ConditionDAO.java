@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.dao;
 
 import com.connection.MyConnection;
@@ -46,17 +41,21 @@ public class ConditionDAO {
     }
 
     public List<ConditionDTO> getList() throws Exception {
-        String sql = "select * from condition";
+        String sql = "select * from `condition`";
         List<ConditionDTO> list = new ArrayList<>();
         try (Connection con = MyConnection.get();
              PreparedStatement ps = con.prepareStatement(sql)) {
             ResultSet rs = ps.executeQuery();
             while(rs.next()) {
                 ConditionDTO condition = new ConditionDTO();
-//                user.setId(rs.getInt("Id"));
-//                user.setUsername(rs.getString("Username"));
-//                user.setName(rs.getString("Name"));
-//                user.setIsAdmin(rs.getBoolean("Admin"));
+                condition.setAddress(rs.getString("Address"));
+                condition.setDiagnosis(rs.getString("Diagnosis"));
+                condition.setCondition(rs.getString("Condition"));
+                condition.setDuration(rs.getString("Duration"));
+                condition.setImpact(rs.getString("Impact"));
+                condition.setExtraInfo(rs.getString("ExtraInfo"));
+                condition.setStudentId(rs.getInt("StudentId"));
+                condition.setPractitioner(rs.getString("Practitioner"));
                 list.add(condition);
             }
             return list;

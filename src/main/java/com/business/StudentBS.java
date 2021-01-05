@@ -53,6 +53,8 @@ public class StudentBS {
                     user.getCondition().getDiagnosis(), user.getCondition().getCondition(),
                     user.getCondition().getDuration(), user.getCondition().getImpact(), user.getCondition().getExtraInfo()});
         }
+        jtblStudent.setPreferredScrollableViewportSize(jtblStudent.getPreferredSize());
+        jtblStudent.setFillsViewportHeight(true);
         return new JScrollPane(jtblStudent);
     }
 }

@@ -4,12 +4,12 @@ import com.dao.ConditionDAO;
 import com.dao.StudentDAO;
 import com.document.dto.ConditionDTO;
 import com.document.dto.StudentDTO;
-import com.sun.deploy.util.StringUtils;
+//import com.sun.deploy.util.StringUtils;
 
 import java.util.*;
 import java.util.List;
 
-//import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 public class WordUtils {
 
@@ -163,13 +163,13 @@ public class WordUtils {
     }
 
     private static String mapToString(Map<String, Boolean> map) {
-        StringBuilder result = new StringBuilder();
+        StringJoiner result = new StringJoiner(", ");
         map.forEach((key, value) -> {
             if(value) {
-                result.append(key).append(", ");
+                result.add(key);
             }
         });
-        return result.toString().trim();
+        return result.toString();
     }
 
     public static void main(String[] main) {
