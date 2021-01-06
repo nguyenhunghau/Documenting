@@ -4,6 +4,7 @@ import com.dao.ConditionDAO;
 import com.dao.StudentDAO;
 import com.document.dto.ConditionDTO;
 import com.document.dto.StudentDTO;
+import com.document.dto.StudentSearch;
 import com.document.dto.UserDTO;
 
 import javax.swing.*;
@@ -15,8 +16,8 @@ public class StudentBS {
     private StudentDAO studentDAO = new StudentDAO();
     private ConditionDAO conditionDAO = new ConditionDAO();
 
-    public List<StudentDTO> getList() throws Exception {
-        List<StudentDTO> studentList = studentDAO.getList();
+    public List<StudentDTO> getList(StudentSearch studentSearch) throws Exception {
+        List<StudentDTO> studentList = studentDAO.getList(studentSearch);
         List<ConditionDTO> conditionList = conditionDAO.getList();
         studentList.forEach(item -> {
             conditionList.forEach(condition -> {
@@ -28,8 +29,8 @@ public class StudentBS {
         return studentList;
     }
 
-    public JScrollPane createJTable() throws Exception {
-        List<StudentDTO> studentDTOList = getList();
+    public JScrollPane createJTable(StudentSearch studentSearch) throws Exception {
+        List<StudentDTO> studentDTOList = getList(studentSearch);
         //UserTableModel model = new UserTableModel(userDTOList);
         DefaultTableModel model = new DefaultTableModel();
         jtblStudent = new JTable(model);

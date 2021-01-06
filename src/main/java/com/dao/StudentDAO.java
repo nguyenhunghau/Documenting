@@ -3,6 +3,7 @@ package com.dao;
 import com.connection.MyConnection;
 import com.document.dto.ConditionDTO;
 import com.document.dto.StudentDTO;
+import com.document.dto.StudentSearch;
 import com.document.dto.UserDTO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -42,8 +43,11 @@ public class StudentDAO {
         }
     }
 
-    public List<StudentDTO> getList() throws Exception {
-        String sql = "select * from student";
+    public List<StudentDTO> getList(StudentSearch studentSearch) throws Exception {
+        String sql = "select * from student where FirstName like '%" + studentSearch.getFirstName() + "%'"
+                + " and StudentId like '%" + studentSearch.getNumber()+ "%'"
+                + " and Phone like '%" + studentSearch.getPhone()+ "%'"
+                + " and Created like '%" + studentSearch.getDate()+ "%'";
         List<StudentDTO> list = new ArrayList<>();
         try (Connection con = MyConnection.get();
              PreparedStatement ps = con.prepareStatement(sql)) {

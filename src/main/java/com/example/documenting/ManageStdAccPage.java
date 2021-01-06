@@ -6,8 +6,10 @@
 package com.example.documenting;
 
 import com.business.StudentBS;
+import com.document.dto.StudentSearch;
 import com.util.Global;
 import com.util.WordUtils;
+import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.FlowLayout;
 import java.io.File;
@@ -16,6 +18,7 @@ import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import static javax.swing.JOptionPane.showMessageDialog;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.table.DefaultTableModel;
@@ -27,24 +30,31 @@ import javax.swing.table.DefaultTableModel;
 public class ManageStdAccPage extends javax.swing.JFrame {
 
     Container cnt;
+    JScrollPane jscroll;
+    JPanel gui;
     StudentBS student = new StudentBS();
 
     public ManageStdAccPage() {
         initComponents();
+        gui = new JPanel(new BorderLayout(2, 3));
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-       // this.setUndecorated(true);
         loadListData();
     }
 
     public void loadListData() {
         try {
-            DefaultTableModel model = new DefaultTableModel();
             cnt = this.getContentPane();
             cnt.setLayout(new FlowLayout(FlowLayout.LEFT));
-            JScrollPane jscroll = student.createJTable();
-            jscroll.setSize(10000, 10000);
-            cnt.add(jscroll);
-            this.pack();
+            StudentSearch studentSearch = new StudentSearch();
+            studentSearch.setFirstName(txtFIrstName.getText());
+            studentSearch.setPhone(txtPhone.getText());
+            studentSearch.setDate(txtDate.getText());
+            studentSearch.setNumber(txtNumber.getText());
+            
+            jscroll = student.createJTable(studentSearch);
+            gui.add(jscroll);
+            cnt.add(gui);
+            //this.pack();
         } catch (Exception ex) {
             Logger.getLogger(ManageStaffAccPage.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -66,6 +76,14 @@ public class ManageStdAccPage extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
+        txtFIrstName = new javax.swing.JTextField();
+        txtNumber = new javax.swing.JTextField();
+        txtDate = new javax.swing.JTextField();
+        txtPhone = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -79,6 +97,11 @@ public class ManageStdAccPage extends javax.swing.JFrame {
         });
 
         jButton3.setText("Search Data");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButton4.setText("Return");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -89,19 +112,48 @@ public class ManageStdAccPage extends javax.swing.JFrame {
 
         jButton5.setText("Delete");
 
+        txtDate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtDateActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("First Name");
+
+        jLabel2.setText("Number");
+
+        jLabel3.setText("Phone");
+
+        jLabel4.setText("Date");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(23, Short.MAX_VALUE)
+                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton3)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnUpload, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addContainerGap(88, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtNumber, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtFIrstName, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtDate)
+                            .addComponent(txtPhone))
+                        .addGap(5, 5, 5))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel4))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(btnUpload, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -114,9 +166,24 @@ public class ManageStdAccPage extends javax.swing.JFrame {
                 .addComponent(jButton5)
                 .addGap(10, 10, 10)
                 .addComponent(jButton4)
-                .addGap(18, 18, 18)
-                .addComponent(jButton3)
-                .addContainerGap(41, Short.MAX_VALUE))
+                .addGap(11, 11, 11)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txtFIrstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
+                .addComponent(txtNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(9, 9, 9)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(8, 8, 8)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(11, 11, 11)
+                .addComponent(jButton3))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -126,14 +193,14 @@ public class ManageStdAccPage extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(1210, Short.MAX_VALUE))
+                .addContainerGap(1176, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(173, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -148,10 +215,8 @@ public class ManageStdAccPage extends javax.swing.JFrame {
             try {
                 new WordUtils().readStudentDoc(selectedFile.getAbsolutePath());
                 showMessageDialog(null, "Upload file success");
-                ManageStdAccPage manage = new ManageStdAccPage();
-                setVisible(false);
-                dispose();
-                manage.setVisible(true);
+                reloadTable();
+                loadListData();
             } catch (Exception ex) {
                 Logger.getLogger(ManageStdAccPage.class.getName()).log(Level.SEVERE, null, ex);
                 showMessageDialog(null, "Upload file fail");
@@ -159,12 +224,28 @@ public class ManageStdAccPage extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnUploadActionPerformed
 
+    private void reloadTable() {
+        gui.remove(jscroll);
+        gui.revalidate();
+        gui.repaint();
+    }
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         StaffPage staffPage = new StaffPage(Global.admin);
         staffPage.setVisible(true);
         this.setVisible(false);
         dispose();
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        reloadTable();
+        loadListData();
+        int numberFound = student.jtblStudent.getRowCount();
+        showMessageDialog(null, "Found " + numberFound + " results");
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void txtDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDateActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtDateActionPerformed
 
     /**
      * @param args the command line arguments
@@ -208,6 +289,14 @@ public class ManageStdAccPage extends javax.swing.JFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JFileChooser jFileChooser1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JTextField txtDate;
+    private javax.swing.JTextField txtFIrstName;
+    private javax.swing.JTextField txtNumber;
+    private javax.swing.JTextField txtPhone;
     // End of variables declaration//GEN-END:variables
 }
