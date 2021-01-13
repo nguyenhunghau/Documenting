@@ -12,6 +12,7 @@ import javax.swing.table.DefaultTableModel;
 import java.util.List;
 
 public class StudentBS {
+
     public JTable jtblStudent;
     private StudentDAO studentDAO = new StudentDAO();
     private ConditionDAO conditionDAO = new ConditionDAO();
@@ -21,7 +22,7 @@ public class StudentBS {
         List<ConditionDTO> conditionList = conditionDAO.getList();
         studentList.forEach(item -> {
             conditionList.forEach(condition -> {
-                if(item.getId() == condition.getStudentId()) {
+                if (item.getId() == condition.getStudentId()) {
                     item.setCondition(condition);
                 }
             });
@@ -47,15 +48,27 @@ public class StudentBS {
         model.addColumn("duration");
         model.addColumn("impact");
         model.addColumn("extraInfo");
-        for(StudentDTO user: studentDTOList) {
+        for (StudentDTO user : studentDTOList) {
             model.addRow(new Object[]{user.getId(), user.getFirstName(), user.getLastName(),
-                    user.getNumber(), user.getPhone(), user.getDate(),
-                    user.getCondition().getPractitioner(), user.getCondition().getAddress(),
-                    user.getCondition().getDiagnosis(), user.getCondition().getCondition(),
-                    user.getCondition().getDuration(), user.getCondition().getImpact(), user.getCondition().getExtraInfo()});
+                user.getNumber(), user.getPhone(), user.getDate(),
+                user.getCondition().getPractitioner(), user.getCondition().getAddress(),
+                user.getCondition().getDiagnosis(), user.getCondition().getCondition(),
+                user.getCondition().getDuration(), user.getCondition().getImpact(), user.getCondition().getExtraInfo()});
         }
         jtblStudent.setPreferredScrollableViewportSize(jtblStudent.getPreferredSize());
         jtblStudent.setFillsViewportHeight(true);
         return new JScrollPane(jtblStudent);
+    }
+
+    public StudentDTO findById(int studentId) throws Exception {
+        return studentDAO.findById(studentId);
+    }
+    
+    public boolean update(StudentDTO student) throws Exception {
+        return studentDAO.update(student);
+    }
+
+    public boolean delete(Integer id) throws Exception {
+        return studentDAO.delete(id);
     }
 }

@@ -44,7 +44,7 @@ public class ManageStdAccPage extends javax.swing.JFrame {
     public void loadListData() {
         try {
             cnt = this.getContentPane();
-            cnt.setLayout(new FlowLayout(FlowLayout.LEFT));
+            panelMain.setLayout(new FlowLayout(FlowLayout.CENTER));
             StudentSearch studentSearch = new StudentSearch();
             studentSearch.setFirstName(txtFIrstName.getText());
             studentSearch.setPhone(txtPhone.getText());
@@ -52,8 +52,8 @@ public class ManageStdAccPage extends javax.swing.JFrame {
             studentSearch.setNumber(txtNumber.getText());
             
             jscroll = student.createJTable(studentSearch);
-            gui.add(jscroll);
-            cnt.add(gui);
+            panelMain.add(jscroll);
+            //cnt.add(panelMain);
             //this.pack();
         } catch (Exception ex) {
             Logger.getLogger(ManageStaffAccPage.class.getName()).log(Level.SEVERE, null, ex);
@@ -84,10 +84,17 @@ public class ManageStdAccPage extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        panelMain = new javax.swing.JPanel();
+        jButton6 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jButton1.setText("Update Info");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         btnUpload.setText("Attach file");
         btnUpload.addActionListener(new java.awt.event.ActionListener() {
@@ -111,6 +118,11 @@ public class ManageStdAccPage extends javax.swing.JFrame {
         });
 
         jButton5.setText("Delete");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         txtDate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -186,6 +198,24 @@ public class ManageStdAccPage extends javax.swing.JFrame {
                 .addComponent(jButton3))
         );
 
+        javax.swing.GroupLayout panelMainLayout = new javax.swing.GroupLayout(panelMain);
+        panelMain.setLayout(panelMainLayout);
+        panelMainLayout.setHorizontalGroup(
+            panelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 764, Short.MAX_VALUE)
+        );
+        panelMainLayout.setVerticalGroup(
+            panelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        jButton6.setText("Logout");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -193,13 +223,21 @@ public class ManageStdAccPage extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(1176, Short.MAX_VALUE))
+                .addGap(34, 34, 34)
+                .addComponent(panelMain, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(67, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jButton6))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(25, 25, 25)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButton6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(panelMain, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -225,9 +263,9 @@ public class ManageStdAccPage extends javax.swing.JFrame {
     }//GEN-LAST:event_btnUploadActionPerformed
 
     private void reloadTable() {
-        gui.remove(jscroll);
-        gui.revalidate();
-        gui.repaint();
+        panelMain.remove(jscroll);
+        panelMain.revalidate();
+        panelMain.repaint();
     }
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         StaffPage staffPage = new StaffPage(Global.admin);
@@ -246,6 +284,43 @@ public class ManageStdAccPage extends javax.swing.JFrame {
     private void txtDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDateActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtDateActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        LoginPage login = new LoginPage();
+        login.setVisible(true);
+        this.setVisible(false);
+        dispose();
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+         try {
+            int column = 0;
+            int row = student.jtblStudent.getSelectedRow();
+            String value = student.jtblStudent.getModel().getValueAt(row, column).toString();
+            UpdateStudent updateStudent = new UpdateStudent(Integer.valueOf(value));
+            updateStudent.setVisible(true);
+            this.setVisible(false);
+        } catch (Exception ex) {
+            showMessageDialog(null, "PLease select student in table");
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+                // TODO add your handling code here:
+        try {
+            int column = 0;
+            int row = student.jtblStudent.getSelectedRow();
+            String value = student.jtblStudent.getModel().getValueAt(row, column).toString();
+            student.delete(Integer.valueOf(value));
+            int[] rows = student.jtblStudent.getSelectedRows();
+            DefaultTableModel model = (DefaultTableModel) student.jtblStudent.getModel();
+            for (int i = 0; i < rows.length; i++) {
+                model.removeRow(rows[i] - i);
+            }
+        } catch (Exception ex) {
+            showMessageDialog(null, "PLease select student in table");
+        }
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -288,12 +363,14 @@ public class ManageStdAccPage extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
     private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel panelMain;
     private javax.swing.JTextField txtDate;
     private javax.swing.JTextField txtFIrstName;
     private javax.swing.JTextField txtNumber;
